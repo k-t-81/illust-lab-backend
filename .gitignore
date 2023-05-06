@@ -1,0 +1,17 @@
+# IDE configuration files
+/.idea
+/.vscode
+*.iml
+
+# Python virtual environment
+/venv
+
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Output files
+/dist
+/build
+/out

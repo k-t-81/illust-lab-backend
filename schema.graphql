@@ -1,0 +1,197 @@
+"""
+Represents binary data as Base64-encoded strings, using the standard alphabet.
+"""
+scalar Base64 @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc4648.html#section-4")
+
+type ControlnetIllustration {
+  id: Int!
+  numInferenceSteps: Int!
+  guidanceScale: Float!
+  controlnetConditioningScale: Float!
+  parentImage: String!
+  illustrationPromptId: Int!
+  illustrationNegativePromptId: Int!
+  illustrationModelId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  illustrationPrompt: IllustrationPrompt!
+  illustrationNegativePrompt: IllustrationPrompt!
+  illustrationModel: IllustrationModel!
+}
+
+input ControlnetIllustrationGenerateInput {
+  numInferenceSteps: Int!
+  guidanceScale: Float!
+  controlnetConditioningScale: Float!
+  prompt: String!
+  negativePrompt: String!
+  model: String!
+  controlnetModel: String!
+  seed: Int!
+  groupId: Int!
+  parentImageBinary: Base64 = null
+  parentImagePath: String = null
+}
+
+type ControlnetIllustrationPost {
+  id: Int!
+  seed: Int!
+  image: String!
+}
+
+type ControlnetIllustrationType {
+  illustration: ControlnetIllustration!
+  posts: [ControlnetIllustrationPost!]!
+}
+
+union ControlnetIllustrationTypeImg2ImgIllustrationTypeTxt2ImgIllustrationType = ControlnetIllustrationType | Img2ImgIllustrationType | Txt2ImgIllustrationType
+
+input CreateIllustrationPostGroupInput {
+  name: String!
+}
+
+"""Date with time (isoformat)"""
+scalar DateTime
+
+input DeleteIllustrationPostGroupInput {
+  id: Int!
+}
+
+type IllustrationModel {
+  id: Int!
+  model: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type IllustrationPostGroup {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type IllustrationPostGroupCreate {
+  id: Int!
+  name: String!
+}
+
+type IllustrationPostGroups {
+  illustrationPostGroups: [IllustrationPostGroup!]!
+  offset: Int!
+  limit: Int!
+}
+
+type IllustrationPrompt {
+  id: Int!
+  value: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Illustrations {
+  illustrations: [ControlnetIllustrationTypeImg2ImgIllustrationTypeTxt2ImgIllustrationType!]!
+  offset: Int!
+  limit: Int!
+}
+
+type Img2ImgIllustration {
+  id: Int!
+  numInferenceSteps: Int!
+  guidanceScale: Float!
+  strength: Float!
+  parentImage: String!
+  illustrationPromptId: Int!
+  illustrationNegativePromptId: Int!
+  illustrationModelId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  illustrationPrompt: IllustrationPrompt!
+  illustrationNegativePrompt: IllustrationPrompt!
+  illustrationModel: IllustrationModel!
+}
+
+input Img2ImgIllustrationGenerateInput {
+  numInferenceSteps: Int!
+  guidanceScale: Float!
+  strength: Float!
+  prompt: String!
+  negativePrompt: String!
+  model: String!
+  seed: Int!
+  groupId: Int!
+  parentImageBinary: Base64 = null
+  parentImagePath: String = null
+}
+
+type Img2ImgIllustrationPost {
+  id: Int!
+  seed: Int!
+  image: String!
+}
+
+type Img2ImgIllustrationType {
+  illustration: Img2ImgIllustration!
+  posts: [Img2ImgIllustrationPost!]!
+}
+
+type Mutation {
+  generateTxt2imgIllustration(input: Txt2ImgIllustrationGenerateInput!): String!
+  generateImg2imgIllustration(input: Img2ImgIllustrationGenerateInput!): String!
+  generateControlnetIllustration(input: ControlnetIllustrationGenerateInput!): String!
+  createIllustrationGroup(input: CreateIllustrationPostGroupInput!): IllustrationPostGroupCreate!
+  updateIllustrationGroup(input: UpdateIllustrationPostGroupInput!): IllustrationPostGroup!
+  deleteIllustrationGroup(input: DeleteIllustrationPostGroupInput!): Boolean!
+}
+
+type Query {
+  readIllustrations(groupId: Int!, offset: Int!): Illustrations!
+  readIllustrationsCount(groupId: Int!): Int!
+  readIllustrationGroups(offset: Int!): IllustrationPostGroups!
+  readIllustrationGroup(id: Int!): IllustrationPostGroup!
+  readIllustrationGroupsCount: Int!
+}
+
+type Txt2ImgIllustration {
+  id: Int!
+  numInferenceSteps: Int!
+  guidanceScale: Float!
+  height: Int!
+  width: Int!
+  illustrationPromptId: Int!
+  illustrationNegativePromptId: Int!
+  illustrationModelId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  illustrationPrompt: IllustrationPrompt!
+  illustrationNegativePrompt: IllustrationPrompt!
+  illustrationModel: IllustrationModel!
+}
+
+input Txt2ImgIllustrationGenerateInput {
+  numInferenceSteps: Int!
+  guidanceScale: Float!
+  height: Int!
+  width: Int!
+  prompt: String!
+  negativePrompt: String!
+  model: String!
+  seed: Int!
+  groupId: Int!
+}
+
+type Txt2ImgIllustrationPost {
+  id: Int!
+  seed: Int!
+  image: String!
+}
+
+type Txt2ImgIllustrationType {
+  illustration: Txt2ImgIllustration!
+  posts: [Txt2ImgIllustrationPost!]!
+}
+
+input UpdateIllustrationPostGroupInput {
+  id: Int!
+  name: String!
+}
